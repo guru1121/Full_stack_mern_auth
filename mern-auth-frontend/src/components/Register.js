@@ -7,13 +7,17 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
       await authService.register(name, email, password);
-      navigate("/login");
+      setSuccessMessage("Registration successful! Redirecting to login...");
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000); // Wait 3 seconds before redirect
     } catch (err) {
       setError("Error registering");
     }
@@ -23,7 +27,7 @@ const Register = () => {
     <div className="container">
       <h2>Register</h2>
       <form onSubmit={handleRegister}>
-        <div className="">
+        <div>
           <input
             type="text"
             placeholder="Username"
@@ -32,31 +36,31 @@ const Register = () => {
             required
           />
         </div>
-   <div>
-
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+        <div>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
-          </div>
-          <div>
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+        </div>
+        <div>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
-          </div>
+        </div>
         <button type="submit">Register</button>
       </form>
+      {successMessage && <p>{successMessage}</p>}
       {error && <p>{error}</p>}
     </div>
   );
 };
+
 
 export default Register;
